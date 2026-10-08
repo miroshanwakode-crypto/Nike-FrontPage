@@ -1,0 +1,25 @@
+jobs:
+- job: Job_1
+  displayName: Agent job 1
+  pool:
+    vmImage: ubuntu-latest
+  steps:
+  - checkout: self
+    fetchDepth: 1
+  - task: Npm@1
+    inputs:
+     command: 'custom'
+     customCommand: 'install -D tailwindcss postcss autoprefixer' 
+  - task: Npm@1
+    displayName: npm build
+    inputs:
+      command: custom
+      verbose: false
+      customCommand: run build
+
+  - task: Npm@1
+    inputs:
+       command: 'publish'
+       workingDir: './dist'
+       publishRegistry: 'useFeed'
+       publishFeed: 'e57f0f70-0ea0-48da-8e11-a36073b406a9/e3a179d8-6203-42a0-b435-9e693c4edc24'
